@@ -1,6 +1,12 @@
 #include <Wire.h>
 //#include <Adafruit_GFX.h>
 #include <Adafruit_IS31FL3731.h>
+#include "RTClib.h"
+
+RTC_DS3231 rtc;
+
+char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+
 
 // If you're using the full breakout...
 Adafruit_IS31FL3731 matrix = Adafruit_IS31FL3731();
@@ -123,6 +129,11 @@ byte ni[8] = {0x00, 0x7c, 0x44, 0x7c, 0x04, 0x7c, 0x00, 0x00};
 
 void setup() {
 
+  
+#ifndef ESP8266
+  while (!Serial); // for Leonardo/Micro/Zero
+#endif
+
   Serial.begin(9600);
   Serial.println("ISSI manual animation test");
   if (! matrix.begin()) {
@@ -143,6 +154,49 @@ void setup() {
 }
 
 void loop() {
+  DateTime now = rtc.now();
+
+   
+    Serial.print(now.year(), DEC);
+    Serial.print('/');
+    Serial.print(now.month(), DEC);
+    Serial.print('/');
+    Serial.print(now.day(), DEC);
+    Serial.print(" (");
+    Serial.print(daysOfTheWeek[now.dayOfTheWeek()]);
+    Serial.print(") ");
+    Serial.print(now.hour(), DEC);
+    Serial.print(':');
+    Serial.print(now.minute(), DEC);
+    Serial.print(':');
+    Serial.print(now.second(), DEC);
+    Serial.println();
+    
+    Serial.print(" since midnight 1/1/1970 = ");
+    Serial.print(now.unixtime());
+    Serial.print("s = ");
+    Serial.print(now.unixtime() / 86400L);
+    Serial.println("d");
+    
+    // calculate a date which is 7 days and 30 seconds into the future
+    DateTime future (now + TimeSpan(7,12,30,6));
+    
+    Serial.print(" now + 7d + 30s: ");
+    Serial.print(future.year(), DEC);
+    Serial.print('/');
+    Serial.print(future.month(), DEC);
+    Serial.print('/');
+    Serial.print(future.day(), DEC);
+    Serial.print(' ');
+    Serial.print(future.hour(), DEC);
+    Serial.print(':');
+    Serial.print(future.minute(), DEC);
+    Serial.print(':');
+    Serial.print(future.second(), DEC);
+    Serial.println();
+    
+    Serial.println();
+    delay(3000);
 
 }
 
