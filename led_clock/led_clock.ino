@@ -86,6 +86,7 @@ byte zero[8]= {B11100000,
                B10100000,
                B11100000, 0x00, 0x00, 0x00, 0x00};
 
+char *noArray[] = {zero, one, two, three, four, five, six, seven, eight, nine};
 
 
 byte a[8] = {0x00, 0x7c, 0x44, 0x44, 0x7c, 0x44, 0x00, 0x00};
@@ -142,7 +143,7 @@ void setup() {
   }
   Serial.println("IS31 Found!");
   
-  matrix.drawBitmap(0, 0, nine, 3, 4, 64);
+  /*matrix.drawBitmap(0, 0, nine, 3, 4, 64);
   matrix.drawBitmap(4, 0, zero, 3, 4, 64);
   matrix.drawBitmap(8, 0, three, 3, 4, 64);
   matrix.drawBitmap(12, 0, four, 3, 4, 64);
@@ -150,7 +151,15 @@ void setup() {
   matrix.drawBitmap(0, 5, five, 3, 4, 64);
   matrix.drawBitmap(4, 5, six, 3, 4, 64);
   matrix.drawBitmap(8, 5, seven, 3, 4, 64);
-  matrix.drawBitmap(12, 5, eight, 3, 4, 64);
+  matrix.drawBitmap(12, 5, eight, 3, 4, 64);*/
+
+  int num = 12;
+  String stringOne = String(num);
+  matrix.drawBitmap(0, 0, (byte*)noArray[0], 3, 4, 64);
+  //matrix.drawBitmap(4, 0, (byte)stringOne[1], 3, 4, 64);
+  
+//char charBuf[50];
+//stringOne.toCharArray(charBuf, 50) 
 }
 
 void loop() {
