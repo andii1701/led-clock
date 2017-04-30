@@ -7,6 +7,9 @@ RTC_DS3231 rtc;
 
 char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
+byte LEDBRIGHTNESS = 32; // 0-255
+
+int previousMinute = -1;
 
 // If you're using the full breakout...
 Adafruit_IS31FL3731 matrix = Adafruit_IS31FL3731();
@@ -127,8 +130,6 @@ byte se[8] = {0x00, 0x7c, 0x04, 0x08, 0x10, 0x10, 0x00, 0x00};
 byte ei[8] = {0x00, 0x7c, 0x44, 0x7c, 0x44, 0x7c, 0x00, 0x00};
 byte ni[8] = {0x00, 0x7c, 0x44, 0x7c, 0x04, 0x7c, 0x00, 0x00};
 
-int previousSecond = -1;
-
 void setup() {
 
   
@@ -154,27 +155,30 @@ void setup() {
   matrix.drawBitmap(8, 5, seven, 3, 4, 64);
   matrix.drawBitmap(12, 5, eight, 3, 4, 64);*/
 
-  int num = 12;
-  String stringOne = String(num);
-  matrix.drawBitmap(0, 0, (byte*)noArray[(int)stringOne[0]-'0'], 3, 4, 64);
-  matrix.drawBitmap(4, 0, (byte*)noArray[(int)stringOne[1]-'0'], 3, 4, 64);
-  Serial.print(stringOne[0] - '0');
-//char charBuf[50];
-//stringOne.toCharArray(charBuf, 50) 
+}
+
+String twoDigitInt2String(int i)  {
+  String s = String(i);
+  if (i < 10)  {
+    s = '0'+s;
+  }
+  return s;
 }
 
 void loop() {
   DateTime now = rtc.now();
-  int currentSecond = now.second();
-  String min = String(currentSecond);
-  if (currentSecond < 10)  {
-    min = '0'+min;
-  }
-  if (previousSecond != currentSecond)  {
-      previousSecond = currentSecond;
+  int currentMinute = now.minute();
+  int currentHour = now.hour();
+  
+  if (previousMinute != currentMinute)  {
+      previousMinute = currentMinute;
+      String min = twoDigitInt2String(currentMinute);
+      String hour = twoDigitInt2String(currentHour);
       matrix.clear();
-      matrix.drawBitmap(0, 0, (byte*)noArray[(int)min[0]-'0'], 3, 4, 64);
-      matrix.drawBitmap(4, 0, (byte*)noArray[(int)min[1]-'0'], 3, 4, 64);
+      matrix.drawBitmap(0, 0, (byte*)noArray[(int)hour[0]-'0'], 3, 4, LEDBRIGHTNESS);
+      matrix.drawBitmap(4, 0, (byte*)noArray[(int)hour[1]-'0'], 3, 4, LEDBRIGHTNESS);
+      matrix.drawBitmap(8, 0, (byte*)noArray[(int)min[0]-'0'], 3, 4, LEDBRIGHTNESS);
+      matrix.drawBitmap(12, 0, (byte*)noArray[(int)min[1]-'0'], 3, 4, LEDBRIGHTNESS);
   }
   
   
