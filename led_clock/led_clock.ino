@@ -127,6 +127,7 @@ byte se[8] = {0x00, 0x7c, 0x04, 0x08, 0x10, 0x10, 0x00, 0x00};
 byte ei[8] = {0x00, 0x7c, 0x44, 0x7c, 0x44, 0x7c, 0x00, 0x00};
 byte ni[8] = {0x00, 0x7c, 0x44, 0x7c, 0x04, 0x7c, 0x00, 0x00};
 
+int previousSecond = -1;
 
 void setup() {
 
@@ -155,18 +156,31 @@ void setup() {
 
   int num = 12;
   String stringOne = String(num);
-  matrix.drawBitmap(0, 0, (byte*)noArray[0], 3, 4, 64);
-  //matrix.drawBitmap(4, 0, (byte)stringOne[1], 3, 4, 64);
-  
+  matrix.drawBitmap(0, 0, (byte*)noArray[(int)stringOne[0]-'0'], 3, 4, 64);
+  matrix.drawBitmap(4, 0, (byte*)noArray[(int)stringOne[1]-'0'], 3, 4, 64);
+  Serial.print(stringOne[0] - '0');
 //char charBuf[50];
 //stringOne.toCharArray(charBuf, 50) 
 }
 
 void loop() {
   DateTime now = rtc.now();
-
+  int currentSecond = now.second();
+  String min = String(currentSecond);
+  if (currentSecond < 10)  {
+    min = '0'+min;
+  }
+  if (previousSecond != currentSecond)  {
+      previousSecond = currentSecond;
+      matrix.clear();
+      matrix.drawBitmap(0, 0, (byte*)noArray[(int)min[0]-'0'], 3, 4, 64);
+      matrix.drawBitmap(4, 0, (byte*)noArray[(int)min[1]-'0'], 3, 4, 64);
+  }
+  
+  
+  
    
-    Serial.print(now.year(), DEC);
+    /*Serial.print(now.year(), DEC);
     Serial.print('/');
     Serial.print(now.month(), DEC);
     Serial.print('/');
@@ -206,6 +220,6 @@ void loop() {
     
     Serial.println();
     delay(3000);
-
+*/
 }
 
