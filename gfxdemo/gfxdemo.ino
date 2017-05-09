@@ -2,7 +2,7 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_IS31FL3731.h>
 
-byte LED_BRIGHTNESS = 32;
+byte LED_BRIGHTNESS = 64;
 
 // If you're using the full breakout...
 Adafruit_IS31FL3731 matrix = Adafruit_IS31FL3731();
@@ -555,10 +555,10 @@ void frown_netural_smile()  {
 void loop() {
   //frown_netural_smile();
   //demo();
-  default_amination();
+  //default_amination();
   //stop_here();
   //hand_tool_hipster();
   //ill_be_good();
-  //get_a_cnc();
+  get_a_cnc();
   //frown_and_hide();
 }
