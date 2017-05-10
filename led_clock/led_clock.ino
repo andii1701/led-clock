@@ -1,5 +1,4 @@
 #include <Wire.h>
-//#include <Adafruit_GFX.h>
 #include <Adafruit_IS31FL3731.h>
 #include "RTClib.h"
 
